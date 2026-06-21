@@ -1,12 +1,12 @@
 pipeline {
 
-```
-agent any
+    agent any
 
-tools {
-    maven 'Maven3'
-}
+    tools {
+        maven 'Maven3'
+    }
 
+    environment {
 environment {
 
     AWS_REGION = 'ap-southeast-2'
