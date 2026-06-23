@@ -1,0 +1,39 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: prod-eks
+  region: ap-southeast-2
+  version: "1.33"
+
+vpc:
+  id: vpc-024485d8b7a69fe9f
+
+  subnets:
+
+    public:
+      ap-southeast-2a:
+        id: subnet-05168829604738623
+
+      ap-southeast-2b:
+        id: subnet-0eaa6fea8e7398f41
+
+    private:
+      ap-southeast-2a:
+        id: subnet-0de1c333e41e83046
+
+      ap-southeast-2b:
+        id: subnet-07c105d22924cfc42
+
+managedNodeGroups:
+  - name: prod-workers
+    instanceType: t3.medium
+    desiredCapacity: 2
+    minSize: 2
+    maxSize: 4
+
+    privateNetworking: false
+
+    subnets:
+      - subnet-05168829604738623
+      - subnet-0eaa6fea8e7398f41
