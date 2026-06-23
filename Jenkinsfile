@@ -26,25 +26,25 @@ pipeline {
 
         stage('Build') {
             steps {
-                 dir('app') {
+                 dir('demo') {
             sh 'mvn clean package -DskipTests'
         }
         }
         }
 
-        stage('Unit Tests') {
-            steps {
-                sh 'mvn test'
-            }
+       stage('Unit Tests') {
+    steps {
+        dir('demo') {
+            sh 'mvn test'
         }
+    }
+}
 
-        stage('SonarQube Scan') {
-            steps {
-                withSonarQubeEnv('Sonar') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
+      dir('demo') {
+    withSonarQubeEnv('Sonar') {
+        sh 'mvn sonar:sonar'
+    }
+}
 
         stage('Quality Gate') {
             steps {
@@ -64,13 +64,9 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                sh '''
-                    docker build -t ${IMAGE_URI} .
-                '''
-            }
-        }
+       dir('demo') {
+    sh 'docker build -t ${IMAGE_URI} .'
+}
 
         stage('Trivy Image Scan') {
             steps {
